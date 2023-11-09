@@ -12,9 +12,10 @@ class Location(models.Model):
     subcounty = models.CharField(max_length=255)
     ward = models.CharField(max_length=255)
     floor = models.CharField(max_length=255)
+    building_name = models.CharField(max_length=255,default='',null=True, blank=True)
 
     def __str__(self):
-        return f"{self.county}, {self.subcounty}, {self.ward}, Floor: {self.floor}"
+        return f"{self.county}, {self.subcounty}, {self.ward}, Floor: {self.floor}, Building: {self.building_name}"
 
 class Business(models.Model):
     business_name = models.CharField(max_length=255)
