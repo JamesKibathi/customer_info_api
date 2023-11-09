@@ -34,20 +34,19 @@ Run migrations
 $ python3 manage.py makemigrations
 $ python3 migrate
   
-
-## Endpoints
-
 ```
-  # Categories
+# Endpoints
+
+  ## Categories
   http://127.0.0.1:8000/api/categories/
   
-  # Locations
+  ## Locations
   http://127.0.0.1:8000/api/locations/
 
-  # Customers
+  ## Customers
   http://127.0.0.1:8000/api/customers/
 
-  # Businesses
+  ## Businesses
   http://127.0.0.1:8000/api/businesses/
 
 
