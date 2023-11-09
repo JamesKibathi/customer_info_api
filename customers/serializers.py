@@ -12,23 +12,28 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class BusinessSerializer(serializers.ModelSerializer):
-    age_of_business = serializers.ReadOnlyField()
-    category = CategorySerializer() 
-
+    
+    category = CategorySerializer(read_only=True)
+    category_id = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Category.objects.all(), source='category')
+    
     class Meta:
         model = Business
         fields = '__all__'
-    def create(self, validated_data):
-        # Extract the category data from the validated data
-        category_data = validated_data.pop('category')
         
-        # Create or retrieve the category instance
-        category_instance, _ = Category.objects.get_or_create(**category_data)
-        
-        # Create the business instance
-        business_instance = Business.objects.create(category=category_instance, **validated_data)
-        
-        return business_instance   
+    def to_representation(self, instance):
+        # Serialize the associated category details
+        category_serializer = CategorySerializer(instance.category)
+        category_data = category_serializer.data
+
+        # Calculate the age_of_business
+        age_of_business = instance.age_of_business
+
+        # Combine the serialized data into the response
+        representation = super(BusinessSerializer, self).to_representation(instance)
+        representation['category'] = category_data
+        representation['age_of_business'] = age_of_business
+
+        return representation
 
 class CustomerSerializer(serializers.ModelSerializer):
      # Extract the nested location and business data
