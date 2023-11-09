@@ -13,10 +13,22 @@ class LocationSerializer(serializers.ModelSerializer):
 
 class BusinessSerializer(serializers.ModelSerializer):
     age_of_business = serializers.ReadOnlyField()
+    category = CategorySerializer() 
 
     class Meta:
         model = Business
         fields = '__all__'
+    def create(self, validated_data):
+        # Extract the category data from the validated data
+        category_data = validated_data.pop('category')
+        
+        # Create or retrieve the category instance
+        category_instance, _ = Category.objects.get_or_create(**category_data)
+        
+        # Create the business instance
+        business_instance = Business.objects.create(category=category_instance, **validated_data)
+        
+        return business_instance   
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
