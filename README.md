@@ -1,4 +1,7 @@
 # customer_info_api
+
+![Screenshot](customer.png)
+
 ## Description
 This is a backend API that is used to manage customer information. The data collected includes the following details:
 1. Customer Name
