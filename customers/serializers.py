@@ -36,9 +36,12 @@ class BusinessSerializer(serializers.ModelSerializer):
         return representation
 
 class CustomerSerializer(serializers.ModelSerializer):
+    customer_name = serializers.CharField(source='name', label='customer name')
+
      # Extract the nested location and business data
     location = LocationSerializer(read_only=True)
-    business = BusinessSerializer(read_only=True)
+    # business = BusinessSerializer(read_only=True)
+    associated_business = BusinessSerializer(source='business',read_only=True,label='associated business')
 
     location_id = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Location.objects.all(), source='location')
     business_id = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Business.objects.all(), source='business')
@@ -46,7 +49,19 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Customer
-        fields = '__all__' 
+        # fields = '__all__' 
+        fields = [
+            'id',
+            'customer_name',
+            'nationality',
+            'phone',
+            'email',
+            'dob',
+            'location_id',
+            'location',
+            'business_id',
+            'associated_business',    
+        ]
       
         
            
